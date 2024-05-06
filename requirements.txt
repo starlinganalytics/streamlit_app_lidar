@@ -1,5 +1,6 @@
+altair<5
 streamlit==1.11.1
-streamlit-folium>=0.8.1
+streamlit-folium
 folium
 requests
 pandas
