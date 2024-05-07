@@ -8,3 +8,6 @@ numpy
 geopandas
 shapely
 matplotlib
+open3d
+plotly
+laspy
