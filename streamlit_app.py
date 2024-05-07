@@ -1,22 +1,4 @@
 
-import os
-import subprocess
-
-# Install OpenGL libraries if not already installed
-def install_opengl_libraries():
-    # Check if libGL.so.1 is present
-    try:
-        subprocess.check_output(['ldconfig', '-p', '|', 'grep', 'libGL.so.1'], shell=True)
-    except subprocess.CalledProcessError:
-        # Install libgl1-mesa-glx package
-        os.system('sudo apt-get install -y libgl1-mesa-glx')
-        # Update shared library cache
-        os.system('sudo ldconfig')
-
-# Check and set LD_LIBRARY_PATH if necessary
-def set_ld_library_path():
-    if 'LD_LIBRARY_PATH' not in os.environ:
-        os.environ['LD_LIBRARY_PATH'] = '/path/to/libGL.so.1'
 
 import plotly.graph_objs as go
 import numpy as np
@@ -65,13 +47,6 @@ def streamlit_app():
 
 # Run the Streamlit app
 if __name__ == "__main__":
-
-        # Install OpenGL libraries
-    install_opengl_libraries()
-
-    # Set LD_LIBRARY_PATH
-    set_ld_library_path()
-
 
     streamlit_app()
 
