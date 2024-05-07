@@ -43,7 +43,7 @@ def streamlit_app():
         fig = create_plotly_plot(x, y, z)
 
         # Display the plot using Streamlit
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=Flase)
 
 # Run the Streamlit app
 if __name__ == "__main__":
