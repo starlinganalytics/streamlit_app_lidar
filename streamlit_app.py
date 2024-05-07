@@ -5,7 +5,7 @@ import laspy
 
 # Function to load .las file using laspy and get scaled coordinates
 def load_las_file(file_path):
-    las_file = laspy.read(file_path, mode="r")
+    las_file = laspy.read(file_path)
     x = las_file.x * las_file.header.scale[0] + las_file.header.offset[0]
     y = las_file.y * las_file.header.scale[1] + las_file.header.offset[1]
     z = las_file.z * las_file.header.scale[2] + las_file.header.offset[2]
@@ -43,7 +43,7 @@ def streamlit_app():
         fig = create_plotly_plot(x, y, z)
 
         # Set the size of the Plotly figure
-        fig.update_layout(width=800, height=600)
+        fig.update_layout(width=800, height=800)
 
         # Display the plot using Streamlit
         st.plotly_chart(fig, use_container_width=True)
