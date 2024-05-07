@@ -43,7 +43,7 @@ def streamlit_app():
         fig = create_plotly_plot(x, y, z)
 
         # Set the size of the Plotly figure
-        fig.update_layout(width=800, height=800)
+        fig.update_layout(width=1000, height=1000)
 
         # Display the plot using Streamlit
         st.plotly_chart(fig, use_container_width=True)
