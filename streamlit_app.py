@@ -5,7 +5,7 @@ import laspy
 
 # Function to load .las file using laspy and get scaled coordinates
 def load_las_file(file_path):
-    las_file = laspy.file.File(file_path, mode="r")
+    las_file = laspy.read(file_path, mode="r")
     x = las_file.x * las_file.header.scale[0] + las_file.header.offset[0]
     y = las_file.y * las_file.header.scale[1] + las_file.header.offset[1]
     z = las_file.z * las_file.header.scale[2] + las_file.header.offset[2]
