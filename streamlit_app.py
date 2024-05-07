@@ -3,10 +3,13 @@ import numpy as np
 import streamlit as st
 import laspy
 
-# Function to load .las file using laspy
+# Function to load .las file using laspy and get scaled coordinates
 def load_las_file(file_path):
-    las_file = laspy.read(file_path)
-    points = np.vstack((las_file.x, las_file.y, las_file.z)).transpose()
+    las_file = laspy.file.File(file_path, mode="r")
+    x = las_file.x * las_file.header.scale[0] + las_file.header.offset[0]
+    y = las_file.y * las_file.header.scale[1] + las_file.header.offset[1]
+    z = las_file.z * las_file.header.scale[2] + las_file.header.offset[2]
+    points = np.vstack((x, y, z)).transpose()
     return points
 
 # Convert the point cloud data to a format that Plotly understands
