@@ -5,7 +5,7 @@ import laspy
 
 # Function to load .las file using laspy
 def load_las_file(file_path):
-    las_file = laspy.file.File(file_path, mode="r")
+    las_file = laspy.read(file_path)
     points = np.vstack((las_file.x, las_file.y, las_file.z)).transpose()
     return points
 
