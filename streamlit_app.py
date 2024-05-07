@@ -1,7 +1,9 @@
-import open3d as o3d
 import plotly.graph_objs as go
 import numpy as np
 import streamlit as st
+import open3d as o3d
+
+
 
 # Step 1: Generate a 3D point cloud using Open3D
 def generate_pointcloud():
