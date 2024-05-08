@@ -40,13 +40,16 @@ def create_plotly_plot(x, y, z):
         )
     )
     
-    # Define layout
+    # Define layout with an expanded horizontal width
     layout = go.Layout(
         scene=dict(
             xaxis=dict(title='X'),
             yaxis=dict(title='Y'),
             zaxis=dict(title='Z')
-        )
+        ),
+        width=1000,
+        height=800,  # Adjust the width as needed
+        margin=dict(l=50)
     )
     
     # Create figure
@@ -58,6 +61,7 @@ def create_plotly_plot(x, y, z):
 def streamlit_app():
     st.title('3D Point Cloud Visualization')
     st.write("Visualizing a .las file using Plotly in Streamlit")
+    st.write("Stanley Park - Vancouver Sea Wall, British Columbia, Canada")
 
     # Load the .las file with a compression factor of 0.5 (adjust as needed)
     file_path = "StanleyPark_100.las"  # File path of the .las file
@@ -70,11 +74,8 @@ def streamlit_app():
     # Create the Plotly plot with color based on z-coordinate values
     fig = create_plotly_plot(x, y, z)
 
-    # Set the size of the Plotly canvas
-    fig.update_layout(width=1000, height=800)
-
     # Display the plot using Streamlit
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig)
 
 # Run the Streamlit app
 if __name__ == "__main__":
