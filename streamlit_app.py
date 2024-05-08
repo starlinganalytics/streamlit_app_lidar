@@ -59,25 +59,22 @@ def streamlit_app():
     st.title('3D Point Cloud Visualization')
     st.write("Visualizing a .las file using Plotly in Streamlit")
 
-    # Allow user to upload .las file
-    uploaded_file = st.file_uploader("Upload .las file", type=["las"])
+    # Load the .las file with a compression factor of 0.5 (adjust as needed)
+    file_path = "StanleyPark_100.las"  # File path of the .las file
+    compression_factor = 3.5
+    pointcloud = load_las_file(file_path, compression_factor)
 
-    if uploaded_file is not None:
-        # Load the .las file with a compression factor of 0.5 (adjust as needed)
-        compression_factor = 3.5
-        pointcloud = load_las_file(uploaded_file, compression_factor)
+    # Convert the point cloud data
+    x, y, z = convert_to_plotly_format(pointcloud)
 
-        # Convert the point cloud data
-        x, y, z = convert_to_plotly_format(pointcloud)
+    # Create the Plotly plot with color based on z-coordinate values
+    fig = create_plotly_plot(x, y, z)
 
-        # Create the Plotly plot with color based on z-coordinate values
-        fig = create_plotly_plot(x, y, z)
+    # Set the size of the Plotly canvas
+    fig.update_layout(width=1000, height=800)
 
-        # Set the size of the Plotly canvas
-        fig.update_layout(width=2000, height=800)
-
-        # Display the plot using Streamlit
-        st.plotly_chart(fig, use_container_width=True)
+    # Display the plot using Streamlit
+    st.plotly_chart(fig, use_container_width=True)
 
 # Run the Streamlit app
 if __name__ == "__main__":
