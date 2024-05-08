@@ -6,9 +6,9 @@ import laspy
 # Function to load .las file using laspy and get scaled coordinates
 def load_las_file(file_path):
     las_file = laspy.read(file_path)
-    x = las_file.x * las_file.header.scale[0] + las_file.header.offset[0]
-    y = las_file.y * las_file.header.scale[1] + las_file.header.offset[1]
-    z = las_file.z * las_file.header.scale[2] + las_file.header.offset[2]
+    x = las_file.X * las_file.header.scale[0] + las_file.header.offset[0]
+    y = las_file.Y * las_file.header.scale[1] + las_file.header.offset[1]
+    z = las_file.Z * las_file.header.scale[2] + las_file.header.offset[2]
     points = np.vstack((x, y, z)).transpose()
     return points
 
@@ -19,7 +19,7 @@ def convert_to_plotly_format(pointcloud):
 
 # Create a Plotly 3D scatter plot
 def create_plotly_plot(x, y, z):
-    trace = go.Scatter3d(x=x, y=y, z=z, mode='markers', marker=dict(size=3))
+    trace = go.Scatter3d(x=x, y=y, z=z, mode='markers', marker=dict(size=1))
     layout = go.Layout(scene=dict(xaxis=dict(title='X'), yaxis=dict(title='Y'), zaxis=dict(title='Z')))
     fig = go.Figure(data=[trace], layout=layout)
     return fig
