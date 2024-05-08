@@ -9,6 +9,7 @@ def load_las_file(file_path):
     x = las_file.X * las_file.header.scale[0] + las_file.header.offset[0]
     y = las_file.Y * las_file.header.scale[1] + las_file.header.offset[1]
     z = las_file.Z * las_file.header.scale[2] + las_file.header.offset[2]
+    print(las_file.header.scale[0],las_file.header.scale[1],las_file.header.scale[2])
     points = np.vstack((x, y, z)).transpose()
     return points
 
