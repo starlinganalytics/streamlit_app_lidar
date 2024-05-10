@@ -28,7 +28,6 @@ def convert_to_plotly_format(points):
     return x, y, z
 
 
-# Create a Plotly 3D scatter plot with color based on z-coordinate values
 def create_plotly_plot(x, y, z, colors=None):
     if colors is None:
         # If colors are not provided, use z-values to color the data
@@ -36,16 +35,14 @@ def create_plotly_plot(x, y, z, colors=None):
 
         # Create trace with color scale based on z-coordinate values
         trace = go.Scatter3d(
-        x=x,
-        y=y,
-        z=z,
-        mode='markers',
-        marker=dict(size=1, color=colors, colorscale='Viridis')
-    )
-        
+            x=x,
+            y=y,
+            z=z,
+            mode='markers',
+            marker=dict(size=1, color=colors, colorscale='Viridis')
+        )
     else:
-    
-        # Create trace with color scale based on z-coordinate values
+        # Create trace with color scale based on provided color values
         trace = go.Scatter3d(
             x=x,
             y=y,
@@ -54,7 +51,7 @@ def create_plotly_plot(x, y, z, colors=None):
             marker=dict(size=1, color=colors)
         )
     
-    # Define layout with an expanded horizontal width
+    # Define layout with an expanded horizontal width and transparent background
     layout = go.Layout(
         scene=dict(
             xaxis=dict(title='X'),
@@ -63,12 +60,16 @@ def create_plotly_plot(x, y, z, colors=None):
         ),
         width=800,
         height=800,  # Adjust the width as needed
-        margin=dict(l=0)
+        margin=dict(l=0),
+        scene_bgcolor='rgba(0,0,0,0)'  # Set background color to transparent
     )
     
     # Create figure
     fig = go.Figure(data=[trace], layout=layout)
-    
+
+    fig.update_layout({'plot_bgcolor': 'rgba(0, 0, 0, 0)',
+                      'paper_bgcolor': 'rgba(0, 0, 0, 0)',})
+        
     return fig
 
 # Embed the Plotly plot into a Streamlit app
@@ -94,6 +95,11 @@ def streamlit_app():
 
     # Create the Plotly plot with color based on z-coordinate values or color values from .las file
     fig = create_plotly_plot(x, y, z, colors)
+
+    # Update layout to change canvas color
+    fig.update_layout(
+    plot_bgcolor='rgba(1,1,1,1)'  # Change canvas color to transparent 
+    )
 
     # Display the plot using Streamlit
     st.plotly_chart(fig)
