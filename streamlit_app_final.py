@@ -16,9 +16,9 @@ def load_las_file(file_path, compression_factor):
 def return_colors(file_path): 
     las_file = laspy.read(file_path)
 
-    colors = np.vstack(((las_file.red -np.asarray(las_file.red).min())/(np.asarray(las_file.red).max() - np.asarray(las_file.red).min()),
-                         (las_file.green -np.asarray(las_file.green).min())/(np.asarray(las_file.green).max() - np.asarray(las_file.green).min()),
-                           (las_file.blue -np.asarray(las_file.blue).min())/(np.asarray(las_file.blue).max() - np.asarray(las_file.blue).min()))).transpose()
+    colors = np.vstack(((las_file.red - np.asarray(las_file.red).min())/(np.asarray(las_file.red).max() - np.asarray(las_file.red).min()),
+                         (las_file.green - np.asarray(las_file.green).min())/(np.asarray(las_file.green).max() - np.asarray(las_file.green).min()),
+                           (las_file.blue - np.asarray(las_file.blue).min())/(np.asarray(las_file.blue).max() - np.asarray(las_file.blue).min()))).transpose()
 
     return colors
 
@@ -28,6 +28,7 @@ def convert_to_plotly_format(points):
     return x, y, z
 
 
+# Create a Plotly 3D scatter plot with color based on z-coordinate values
 def create_plotly_plot(x, y, z, colors=None):
     if colors is None:
         # If colors are not provided, use z-values to color the data
@@ -35,14 +36,16 @@ def create_plotly_plot(x, y, z, colors=None):
 
         # Create trace with color scale based on z-coordinate values
         trace = go.Scatter3d(
-            x=x,
-            y=y,
-            z=z,
-            mode='markers',
-            marker=dict(size=1, color=colors, colorscale='Viridis')
-        )
+        x=x,
+        y=y,
+        z=z,
+        mode='markers',
+        marker=dict(size=1, color=colors, colorscale='Viridis')
+    )
+        
     else:
-        # Create trace with color scale based on provided color values
+    
+        # Create trace with color scale based on z-coordinate values
         trace = go.Scatter3d(
             x=x,
             y=y,
@@ -51,7 +54,7 @@ def create_plotly_plot(x, y, z, colors=None):
             marker=dict(size=1, color=colors)
         )
     
-    # Define layout with an expanded horizontal width and transparent background
+    # Define layout with an expanded horizontal width
     layout = go.Layout(
         scene=dict(
             xaxis=dict(title='X'),
@@ -60,23 +63,38 @@ def create_plotly_plot(x, y, z, colors=None):
         ),
         width=800,
         height=800,  # Adjust the width as needed
-        margin=dict(l=0),
-        scene_bgcolor='rgba(0,0,0,0)'  # Set background color to transparent
+        margin=dict(l=0)
     )
     
     # Create figure
     fig = go.Figure(data=[trace], layout=layout)
-
-    fig.update_layout({'plot_bgcolor': 'rgba(0, 0, 0, 0)',
-                      'paper_bgcolor': 'rgba(0, 0, 0, 0)',})
-        
+    
     return fig
 
 # Embed the Plotly plot into a Streamlit app
 def streamlit_app():
     st.title('3D Point Cloud Visualization')
-    st.write("Visualizing a .las file using Plotly in Streamlit")
-    st.write("Stanley Park - Vancouver Sea Wall, British Columbia, Canada")
+    st.header("Visualizing a .LAS file using Plotly in Streamlit")
+    st.subheader("Stanley Park - Vancouver Sea Wall, British Columbia, Canada")
+    st.subheader("Written By: Juan Carlos Reyes")
+    st.write("May 9, 2024.")
+
+    st.write("Open-source LiDAR processing in Python integrates seamlessly with \
+             libraries like LASpy and Open3D, offering a flexible and efficient workflow. \
+             LASpy provides a robust framework for reading, writing, and manipulating LiDAR data \
+             in the LAS format, enabling tasks such as point cloud filtering and classification.\
+              Complementing this, Open3D facilitates advanced point cloud visualization \
+              and analysis, including registration, segmentation, and surface reconstruction. \
+              Together, these tools empower users to perform comprehensive LiDAR processing \
+              pipelines entirely within Python, harnessing the language's versatility and \
+              the libraries' capabilities for diverse applications in research, industry, \
+              and academia.")
+    
+    st.write("The following graphic shows a 3D visualiztion of a colourized point cloud by \
+             employing Python for pre-processing .LAS data, and Plotly for visualization on a web browser.")
+
+    st.code("file_path = 'StanleyPark_100.las'")
+    st.code("las_file = laspy.read(file_path)")
 
     # Load the .las file with a compression factor of 0.5 (adjust as needed)
     file_path = "StanleyPark_100.las"  # File path of the .las file
@@ -95,11 +113,6 @@ def streamlit_app():
 
     # Create the Plotly plot with color based on z-coordinate values or color values from .las file
     fig = create_plotly_plot(x, y, z, colors)
-
-    # Update layout to change canvas color
-    fig.update_layout(
-    plot_bgcolor='rgba(1,1,1,1)'  # Change canvas color to transparent 
-    )
 
     # Display the plot using Streamlit
     st.plotly_chart(fig)
