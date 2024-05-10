@@ -29,18 +29,30 @@ def convert_to_plotly_format(points):
 
 
 # Create a Plotly 3D scatter plot with color based on z-coordinate values
-def create_plotly_plot(x, y, z, colors):
-    # Normalize z-coordinates to [0, 1] range
-    z_normalized = (z - np.min(z)) / (np.max(z) - np.min(z))
-    
-    # Create trace with color scale based on z-coordinate values
-    trace = go.Scatter3d(
+def create_plotly_plot(x, y, z, colors=None):
+    if colors is None:
+        # If colors are not provided, use z-values to color the data
+        colors = z
+
+        # Create trace with color scale based on z-coordinate values
+        trace = go.Scatter3d(
         x=x,
         y=y,
         z=z,
         mode='markers',
-        marker=dict(size=1, color=colors)
+        marker=dict(size=1, color=colors, colorscale='Viridis')
     )
+        
+    else:
+    
+        # Create trace with color scale based on z-coordinate values
+        trace = go.Scatter3d(
+            x=x,
+            y=y,
+            z=z,
+            mode='markers',
+            marker=dict(size=1, color=colors)
+        )
     
     # Define layout with an expanded horizontal width
     layout = go.Layout(
@@ -69,12 +81,18 @@ def streamlit_app():
     file_path = "StanleyPark_100.las"  # File path of the .las file
     compression_factor = 3.5
     points = load_las_file(file_path, compression_factor)
-    colors = return_colors(file_path)
+    
+    # Add a checkbox to allow the user to choose between using color values from .las file or just z-values
+    use_color_values = st.checkbox("Use Color Values from LAS file")
+    if use_color_values:
+        colors = return_colors(file_path)
+    else:
+        colors = None
 
     # Convert the point cloud data
     x, y, z = convert_to_plotly_format(points)
 
-    # Create the Plotly plot with color based on z-coordinate values
+    # Create the Plotly plot with color based on z-coordinate values or color values from .las file
     fig = create_plotly_plot(x, y, z, colors)
 
     # Display the plot using Streamlit
