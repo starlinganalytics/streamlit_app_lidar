@@ -9,6 +9,13 @@ def streamlit_app():
     st.subheader("Written By: Juan Carlos Reyes")
     st.subheader("May 9, 2024.")
 
+    
+
+    mov_path = "lions_gate_1.mov"
+
+    # Display the .mov file using st.video
+    st.video(mov_path)
+
     st.header("Opening a .LAS file with Laspy")
     st.write("Geospatial analysts typically work with programming languages such as \
     Python due to their versatility, flexibility, and collection of open-source \
